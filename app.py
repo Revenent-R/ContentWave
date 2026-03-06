@@ -94,6 +94,16 @@ def rate(word: RateRequest):
         
         5. **A unique real-world event must score higher than a category**
         
+        6. Never assign high specificity to a generic head noun unless modifiers uniquely identify it.
+
+        Examples:
+        
+        * "Operation" = broad generic term → low score
+        * "Operation Lion's Roar" = named unique event → high score
+        
+        A generic word alone must stay low even if capitalized.
+
+        
         ## Output Format (STRICT JSON ONLY):
         
         {
