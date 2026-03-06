@@ -2,6 +2,7 @@ from huggingface_hub import InferenceClient
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -19,6 +20,12 @@ MODEL = os.environ.get("MODEL", None)
 
 model = InferenceClient(token=API_KEY)
 
+class RateRequest(BaseModel):
+    word: str
+
+class PostRequest(BaseModel):
+    prompt: str
+
 
 @app.get("/")
 def health_check():
@@ -30,7 +37,7 @@ def health_check():
 
 
 @app.post("/rate")
-def rate(word):
+def rate(word: RateRequest):
 
     messages = [
         {"role": "system",
@@ -112,7 +119,7 @@ Reason: Very precise and highly specific.
 
 
 @app.post("/posts")
-def posts(prompt):
+def posts(prompt: PostRequest):
 
     messages = [
         {"role": "system",
