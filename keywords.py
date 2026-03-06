@@ -1,46 +1,112 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
+import os
 import torch
+from diffusers.utils import export_to_video
 
-model_name = "Qwen/Qwen2.5-1.5B-Instruct"
+# -----------------------------
+# Cache directory
+# -----------------------------
+CACHE_DIR = "E:/hf_cache"
+os.makedirs(CACHE_DIR, exist_ok=True)
 
-# Load tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+os.environ["HF_HOME"] = CACHE_DIR
 
-# Load model
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    torch_dtype=torch.float16,
-    device_map="cuda"
-)
+# Helps reduce VRAM fragmentation
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
-USER_TOPIC = input("Please enter the topic you wish to use: ")
+# -----------------------------
+# Imports AFTER cache setup
+# -----------------------------
+from diffusers import AnimateDiffPipeline, MotionAdapter
+from diffusers import StableDiffusionXLPipeline
 
-# Input prompt
-messages = [
-    {'role': 'system', 'content': '''
-    You are a keyword generation assistant.
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
-Your task is to generate exactly {X} highly relevant keywords based on the topic provided by the user.
+# -----------------------------
+# Image Generation
+# -----------------------------
+def generate_image():
 
-Rules:
-- Return only keywords, no explanations.
-- Keywords should be directly related to the topic.
-- Include a mix of broad keywords, specific keywords, and related search terms.
-- Avoid duplicates.
-- If possible, include trending or commonly searched variations.
-- Output as a numbered list.
-    '''},
-    {"role": "user", "content": f"User topic: {USER_TOPIC}"}
-]
+    pipe = StableDiffusionXLPipeline.from_pretrained(
+        "stabilityai/stable-diffusion-xl-base-1.0",
+        torch_dtype=torch.float16,
+        cache_dir=CACHE_DIR
+    )
 
-text = tokenizer.apply_chat_template(
-    messages,
-    tokenize=False,
-    add_generation_prompt=True
-)
+    pipe.enable_attention_slicing()
+    pipe.enable_model_cpu_offload()   # important for 6GB GPU
 
-inputs = tokenizer(text, return_tensors="pt").to('cuda')
+    image = pipe(
+        """
+Create a premium luxury perfume advertisement in vertical 4:5 format, designed for Instagram and high-end social media promotion.
 
-outputs = model.generate(**inputs, max_new_tokens=150)
+Place an elegant crystal-clear perfume bottle at the center on a glossy reflective surface, with metallic gold and silver details, cinematic studio lighting, and sharp luxury reflections.
 
-print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+Use a bright vibrant luxury background with electric pink, turquoise blue, golden yellow, and soft purple gradients, enhanced by soft bokeh, glowing light streaks, floating particles, translucent smoke, and subtle abstract floral elements.
+
+Keep the composition clean and symmetrical with clear negative space for large readable text.
+
+Text overlay must be highly visible and professionally designed:
+Top: "LUMÉA"
+Center headline: "Awaken Your Senses"
+Lower text: "A bold fragrance crafted for unforgettable moments."
+Bottom CTA: "Shop Now" | "Limited Edition"
+
+Typography should be the main focus: elegant luxury magazine style, premium serif + modern sans-serif fonts, white and gold text, sharp readability, strong contrast, subtle glow.
+
+Add minimal premium extras: thin luxury borders, NEW ARRIVAL badge, soft text glow, refined Instagram ad layout.
+
+Style: ultra realistic luxury perfume campaign, premium commercial photography, high-end branding, sharp focus, 8k.
+        """,
+        num_inference_steps=30
+    ).images[0]
+
+    image.save("output.png")
+
+    del pipe
+    torch.cuda.empty_cache()
+
+    print("✅ Image saved locally")
+
+# -----------------------------
+# Video Generation
+# -----------------------------
+
+def generate_video():
+
+    adapter = MotionAdapter.from_pretrained(
+        "guoyww/animatediff-motion-adapter-v1-5-2",
+        torch_dtype=torch.float16,
+        cache_dir=CACHE_DIR
+    )
+
+    pipe = AnimateDiffPipeline.from_pretrained(
+        "runwayml/stable-diffusion-v1-5",
+        motion_adapter=adapter,
+        torch_dtype=torch.float16,
+        cache_dir=CACHE_DIR
+    )
+
+    pipe.enable_attention_slicing()
+    pipe.enable_model_cpu_offload()
+
+    output = pipe(
+        prompt="a dragon flying in dark sky",
+        num_frames=16,
+        num_inference_steps=5
+    )
+
+    frames = output.frames[0]
+
+    export_to_video(frames, "output.mp4", fps=8)
+
+    del pipe
+    del adapter
+    torch.cuda.empty_cache()
+
+    print("✅ MP4 saved")
+
+# -----------------------------
+# Run
+# -----------------------------
+generate_image()
+# generate_video()
