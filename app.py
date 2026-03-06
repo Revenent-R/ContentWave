@@ -103,7 +103,7 @@ Rating: 9.8
 Reason: Very precise and highly specific.
              """
          },
-        {"role": "user", "content": f"{word}"}
+        {"role": "user", "content": f"{word.word}"}
     ]
 
     response = model.chat.completions.create(
@@ -115,7 +115,9 @@ Reason: Very precise and highly specific.
 
     print(response)
 
-    return {'rating': response}
+    final_text = response.choices[0].message.content
+
+    return {'rating': final_text}
 
 
 @app.post("/posts")
@@ -148,7 +150,7 @@ Return only final posts.
         },
         {
             'role': 'user',
-            'content': f'{prompt}'
+            'content': f'{prompt.prompt}'
         }
     ]
 
@@ -161,6 +163,8 @@ Return only final posts.
 
     print(response)
 
-    return {'posts': response}
+    final_text = response.choices[0].message.content
+
+    return {'posts': final_text}
 
 
