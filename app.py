@@ -43,100 +43,343 @@ def rate(word: RateRequest):
         {"role": "system",
          "content":
          """
-         Rate the given word or phrase on a scale from **1.0 to 10.0** based on **semantic specificity**, meaning how uniquely and narrowly it identifies a concept, event, object, or category.
-        
-        ## Core Principle:
-        
-        The score must increase whenever the phrase adds narrowing information such as:
-        
-        * Named entities
-        * Dates
-        * Locations
-        * Unique event names
-        * Specific actions
-        * Identifiable subtypes
-        
-        ## Rating Rules:
-        
-        * **1.0–1.9 = Extremely broad umbrella term**
-          Covers massive conceptual space.
-          Examples: war, conflict, object, animal
-        
-        * **2.0–3.9 = Broad category**
-          Large category with many subtypes.
-          Examples: civil war, military conflict, vehicle
-        
-        * **4.0–5.9 = Partially narrowed concept**
-          Includes named domain or actors but still broad.
-          Examples: Iran-Israel conflict
-        
-        * **6.0–7.9 = Clearly narrowed identifiable topic**
-          Refers to a particular ongoing situation or limited category.
-          Examples: ongoing Iran-Israel war
-        
-        * **8.0–9.4 = Highly specific identifiable entity/event**
-          Named operation, subtype, or clearly unique target.
-          Examples: Operation Lion’s Roar
-        
-        * **9.5–10.0 = Extremely precise unique event**
-          Exact action + date + location + actor combination.
-          Examples: Israeli airstrike on Tehran Feb 28 2026
-        
-        ## Critical Scoring Rules:
-        
-        1. **Named operations automatically score at least 8.5 unless they still cover multiple phases.**
-        
-        2. **Date + location + action together usually push score above 9.3**
-        
-        3. **Words like war/conflict should NOT automatically score low if modified by strong narrowing context**
-        
-        4. **Always judge full phrase, not individual words**
-        
-        5. **A unique real-world event must score higher than a category**
-        
-        6. Never assign high specificity to a generic head noun unless modifiers uniquely identify it.
-
-        Examples:
-        
-        * "Operation" = broad generic term → low score
-        * "Operation Lion's Roar" = named unique event → high score
-        
-        A generic word alone must stay low even if capitalized.
-
-        
-        ## Output Format (STRICT JSON ONLY):
-        
-        {
-        "Word": "[phrase]",
-        "Rating": [1.0-10.0],
-        "Reason": "[short explanation]"
-        }
-        
-        ## Examples:
-        
-        {
-        "Word": "war",
-        "Rating": 1.0,
-        "Reason": "Extremely broad umbrella term covering all wars."
-        }
-        
-        {
-        "Word": "Iran-Israel conflict",
-        "Rating": 4.8,
-        "Reason": "Named geopolitical conflict but still includes many events."
-        }
-        
-        {
-        "Word": "Operation Lion’s Roar",
-        "Rating": 8.7,
-        "Reason": "Named military operation identifying a unique campaign."
-        }
-        
-        {
-        "Word": "Israeli airstrike on Tehran Feb 28 2026",
-        "Rating": 9.7,
-        "Reason": "Exact military event with actor, action, location, and date."
-        }        
+            Rate the given word or phrase on a scale from **1.0 to 10.0** based on **semantic specificity** — how narrowly and uniquely it identifies a concept, category, object, event, instance, or real-world referent.
+            
+            # Core Objective
+            
+            The rating must reflect **how much semantic space the phrase covers**.
+            
+            * Broad phrases cover many unrelated possibilities → low score
+            * Narrow phrases identify one highly constrained target → high score
+            
+            The score must depend on the **entire phrase**, not isolated words.
+            
+            ---
+            
+            # Mandatory Scoring Process (Follow in Order)
+            
+            ## Step 1 — Identify the head term
+            
+            Determine the main semantic head noun.
+            
+            Examples:
+            
+            * "Operation Lion's Roar" → head = operation
+            * "Toyota sedan" → head = sedan
+            * "Israeli airstrike on Tehran Feb 28 2026" → head = airstrike
+            
+            The head term determines the base score.
+            
+            ---
+            
+            ## Step 2 — Assign base score from head breadth
+            
+            Use head breadth before modifiers:
+            
+            * Extremely broad umbrella nouns → **1.0–1.9**
+            * Broad categories → **2.0–3.9**
+            * Moderate categories → **4.0–5.9**
+            * Narrow categories → **6.0–7.4**
+            
+            Examples:
+            
+            * thing → 1.0
+            * war → 1.0
+            * animal → 1.8
+            * vehicle → 2.4
+            * operation → 2.0
+            * sedan → 7.0
+            
+            ---
+            
+            ## Step 3 — Add narrowing modifiers
+            
+            Increase score for each narrowing layer:
+            
+            ### Named entity modifier
+            
+            Examples:
+            
+            * Iran
+            * Israel
+            * Toyota
+            * Tehran
+            
+            Typical increase: +1.0 to +2.0
+            
+            ---
+            
+            ### Named operation / official title
+            
+            Examples:
+            
+            * Lion's Roar
+            * Desert Storm
+            
+            Typical increase: +5.5 to +7.0
+            
+            A named operation usually identifies one unique campaign.
+            
+            ---
+            
+            ### Action modifier
+            
+            Examples:
+            
+            * strike
+            * invasion
+            * assassination
+            * launch
+            
+            Typical increase: +0.8 to +1.5
+            
+            ---
+            
+            ### Location modifier
+            
+            Examples:
+            
+            * Tehran
+            * Dubai Marina
+            
+            Typical increase: +0.7 to +1.5
+            
+            ---
+            
+            ### Date / time modifier
+            
+            Examples:
+            
+            * Feb 28 2026
+            * 2026
+            
+            Typical increase: +1.0 to +2.0
+            
+            Date strongly increases uniqueness.
+            
+            ---
+            
+            ### Product variant modifier
+            
+            Examples:
+            
+            * 512GB
+            * Titanium Black
+            
+            Typical increase: +0.8 to +1.5
+            
+            ---
+            
+            ### Physical instance modifier
+            
+            Examples:
+            
+            * red
+            * parked in Dubai Marina
+            
+            Typical increase: +1.0 to +2.0
+            
+            This often pushes products near instance-level specificity.
+            
+            ---
+            
+            # Critical Rules
+            
+            ## Rule 1 — Generic heads must remain low
+            
+            Never assign high specificity to a generic word unless modifiers uniquely narrow it.
+            
+            Correct:
+            
+            * Operation → 2.0
+            * Operation Lion's Roar → 8.7
+            
+            Wrong:
+            
+            * Operation → 8+
+            
+            Capitalization alone must never increase score.
+            
+            ---
+            
+            ## Rule 2 — Full phrase always overrides word bias
+            
+            Words like:
+            
+            * war
+            * conflict
+            * attack
+            
+            must not automatically score low if the phrase strongly narrows them.
+            
+            Correct:
+            
+            * ongoing Iran-Israel war → 6.3
+            
+            ---
+            
+            ## Rule 3 — Named operations are highly specific
+            
+            Named military operations usually score:
+            
+            **8.5–9.1**
+            
+            unless they still describe multiple independent campaigns.
+            
+            ---
+            
+            ## Rule 4 — Exact event formula
+            
+            If phrase contains:
+            
+            actor + action + location + date
+            
+            score usually:
+            
+            **9.5–10.0**
+            
+            Example:
+            Israeli airstrike on Tehran Feb 28 2026 → 9.7
+            
+            ---
+            
+            ## Rule 5 — Product variants must continue increasing
+            
+            Every exact variant increases score.
+            
+            Correct:
+            
+            * Samsung Galaxy S24 Ultra → 9.2
+            * Samsung Galaxy S24 Ultra 512GB Titanium Black → 9.8
+            
+            ---
+            
+            ## Rule 6 — Scene-level uniqueness can exceed model-level specificity
+            
+            Example:
+            
+            * Ferrari 488 Spider → 8.9
+            * Red Ferrari 488 parked in Dubai Marina → 9.8
+            
+            Because the second phrase nearly identifies one instance.
+            
+            ---
+            
+            # Rating Scale
+            
+            ## 1.0–1.9
+            
+            Extremely broad umbrella term
+            
+            Examples:
+            
+            * thing
+            * war
+            * object
+            
+            ---
+            
+            ## 2.0–3.9
+            
+            Broad category
+            
+            Examples:
+            
+            * military conflict
+            * vehicle
+            * operation
+            
+            ---
+            
+            ## 4.0–5.9
+            
+            Partially narrowed topic
+            
+            Examples:
+            
+            * Iran-Israel conflict
+            
+            ---
+            
+            ## 6.0–7.9
+            
+            Clearly narrowed identifiable topic
+            
+            Examples:
+            
+            * ongoing Iran-Israel war
+            * Toyota sedan
+            
+            ---
+            
+            ## 8.0–9.4
+            
+            Highly specific unique entity/event/model
+            
+            Examples:
+            
+            * Operation Lion's Roar
+            * Ferrari 488 Spider
+            
+            ---
+            
+            ## 9.5–10.0
+            
+            Extremely precise event / variant / near-instance
+            
+            Examples:
+            
+            * Israeli airstrike on Tehran Feb 28 2026
+            * Samsung Galaxy S24 Ultra 512GB Titanium Black
+            
+            ---
+            
+            # Output Format (STRICT JSON ONLY)
+            
+            {
+            "Word": "[phrase]",
+            "Rating": [numeric],
+            "Reason": "[short explanation]"
+            }
+            
+            ---
+            
+            # Output Rules
+            
+            * Return valid JSON only
+            * No markdown
+            * No extra commentary
+            * Rating must be numeric
+            * Use one decimal place when possible
+            
+            ---
+            
+            # Calibration Examples
+            
+            {
+            "Word": "Operation",
+            "Rating": 2.0,
+            "Reason": "Generic category with many meanings and applications."
+            }
+            
+            {
+            "Word": "Operation Lion's Roar",
+            "Rating": 8.7,
+            "Reason": "Named military operation identifying a unique campaign."
+            }
+            
+            {
+            "Word": "Toyota sedan",
+            "Rating": 7.4,
+            "Reason": "Brand plus vehicle subtype narrows category significantly."
+            }
+            
+            {
+            "Word": "Red Ferrari 488 parked in Dubai Marina",
+            "Rating": 9.8,
+            "Reason": "Highly constrained product instance with location and visual attributes."
+            }
+             
          """
          },
         {"role": "user", "content": f"{word.word}"}
