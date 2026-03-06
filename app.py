@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-API_KEY = os.environ.get("API_KEY", None)
+API_KEY = os.environ.get("API_TOKEN", None)
 MODEL = os.environ.get("MODEL", None)
 
 model = InferenceClient(token=API_KEY)
