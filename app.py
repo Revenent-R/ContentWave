@@ -14,7 +14,11 @@ model = InferenceClient(token=API_KEY)
 
 @app.get("/")
 def health_check():
-    return {"status": "healthy", "message": "API is running"}
+    return {"status": "healthy", "message": "API is running"},200
+
+@app.head("/")
+def health_check():
+    return {"status": "healthy", "message": "API is running"},200
 
 
 @app.post("/rate")
