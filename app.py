@@ -8,11 +8,11 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # For testing only; restrict this in production
+    allow_origins=["*"], # In production, you'd put your frontend's URL here
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 API_KEY = os.environ.get("API_KEY", None)
 MODEL = os.environ.get("MODEL", None)
