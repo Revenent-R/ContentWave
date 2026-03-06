@@ -1,9 +1,17 @@
 from huggingface_hub import InferenceClient
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # For testing only; restrict this in production
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 API_KEY = os.environ.get("API_KEY", None)
