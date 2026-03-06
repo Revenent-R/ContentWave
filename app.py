@@ -42,79 +42,92 @@ def rate(word: RateRequest):
     messages = [
         {"role": "system",
          "content":
-             """
-             Rate the given word on a scale from **1.0 to 10.0** based on how broad or specific its meaning is.
-
-             ### Rating Rules:
-
-             * **1.0 = Extremely broad umbrella term** (covers vast categories, highly general, highly vague)
-             * **2.0–3.9 = Broad term** (large conceptual coverage, many subcategories)
-             * **4.0–5.9 = Moderately broad** (general but partially narrowed)
-             * **6.0–7.9 = Moderately specific** (clear category, limited scope)
-             * **8.0–9.4 = Highly specific** (narrow meaning, precise category)
-             * **9.5–10.0 = Extremely specific** (very exact object, instance, or narrowly defined concept)
-
-             ### Important Rule:
-
-             If the word is an **umbrella term**, reduce the score according to how many meanings, categories, or subtypes it includes.
-
-             ### Decimal Precision:
-
-             Use decimals when needed to reflect subtle differences in specificity.
-
-             ### Consider:
-
-             * Number of subcategories included
-             * Breadth of interpretation
-             * Vagueness vs precision
-             * Context flexibility
-             * Conceptual scope
-
-             ### Output Format (STRICT JSON ONLY):
-             {
-               "Word": "[word]",
-               "Rating": [1.0–10.0],
-               "Reason": "[short explanation]"
-             }
-
-             ### Rules:
-             - Return only valid JSON
-             - Use double quotes for keys and string values
-             - Rating must be numeric
-             - No extra text outside JSON
-
-             ### Examples:
-             {
-               "Word": "Entity",
-               "Rating": 1.2,
-               "Reason": "Extremely broad; can refer to almost anything conceptual or physical."
-             }
-             {
-               "Word": "Animal",
-               "Rating": 1.8,
-               "Reason": "Covers all animal species."
-             }
-             {
-               "Word": "Vehicle",
-               "Rating": 2.4,
-               "Reason": "Includes many transport categories."
-             }
-             {
-               "Word": "Car",
-               "Rating": 6.3,
-               "Reason": "Specific transport type but contains many variants."
-             }
-             {
-               "Word": "Sedan",
-               "Rating": 8.4,
-               "Reason": "Narrow subtype of car."
-             }
-             {
-               "Word": "Red Ferrari 488",
-               "Rating": 9.8,
-               "Reason": "Very precise and highly specific."
-             }
-             """
+         """
+         Rate the given word or phrase on a scale from **1.0 to 10.0** based on **semantic specificity**, meaning how uniquely and narrowly it identifies a concept, event, object, or category.
+        
+        ## Core Principle:
+        
+        The score must increase whenever the phrase adds narrowing information such as:
+        
+        * Named entities
+        * Dates
+        * Locations
+        * Unique event names
+        * Specific actions
+        * Identifiable subtypes
+        
+        ## Rating Rules:
+        
+        * **1.0–1.9 = Extremely broad umbrella term**
+          Covers massive conceptual space.
+          Examples: war, conflict, object, animal
+        
+        * **2.0–3.9 = Broad category**
+          Large category with many subtypes.
+          Examples: civil war, military conflict, vehicle
+        
+        * **4.0–5.9 = Partially narrowed concept**
+          Includes named domain or actors but still broad.
+          Examples: Iran-Israel conflict
+        
+        * **6.0–7.9 = Clearly narrowed identifiable topic**
+          Refers to a particular ongoing situation or limited category.
+          Examples: ongoing Iran-Israel war
+        
+        * **8.0–9.4 = Highly specific identifiable entity/event**
+          Named operation, subtype, or clearly unique target.
+          Examples: Operation Lion’s Roar
+        
+        * **9.5–10.0 = Extremely precise unique event**
+          Exact action + date + location + actor combination.
+          Examples: Israeli airstrike on Tehran Feb 28 2026
+        
+        ## Critical Scoring Rules:
+        
+        1. **Named operations automatically score at least 8.5 unless they still cover multiple phases.**
+        
+        2. **Date + location + action together usually push score above 9.3**
+        
+        3. **Words like war/conflict should NOT automatically score low if modified by strong narrowing context**
+        
+        4. **Always judge full phrase, not individual words**
+        
+        5. **A unique real-world event must score higher than a category**
+        
+        ## Output Format (STRICT JSON ONLY):
+        
+        {
+        "Word": "[phrase]",
+        "Rating": [1.0-10.0],
+        "Reason": "[short explanation]"
+        }
+        
+        ## Examples:
+        
+        {
+        "Word": "war",
+        "Rating": 1.0,
+        "Reason": "Extremely broad umbrella term covering all wars."
+        }
+        
+        {
+        "Word": "Iran-Israel conflict",
+        "Rating": 4.8,
+        "Reason": "Named geopolitical conflict but still includes many events."
+        }
+        
+        {
+        "Word": "Operation Lion’s Roar",
+        "Rating": 8.7,
+        "Reason": "Named military operation identifying a unique campaign."
+        }
+        
+        {
+        "Word": "Israeli airstrike on Tehran Feb 28 2026",
+        "Rating": 9.7,
+        "Reason": "Exact military event with actor, action, location, and date."
+        }        
+         """
          },
         {"role": "user", "content": f"{word.word}"}
     ]
