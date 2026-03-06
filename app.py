@@ -45,62 +45,75 @@ def rate(word: RateRequest):
              """
              Rate the given word on a scale from **1.0 to 10.0** based on how broad or specific its meaning is.
 
-### Rating Rules:
+             ### Rating Rules:
 
-* **1.0 = Extremely broad umbrella term** (covers vast categories, highly general, highly vague)
-* **2.0–3.9 = Broad term** (large conceptual coverage, many subcategories)
-* **4.0–5.9 = Moderately broad** (general but partially narrowed)
-* **6.0–7.9 = Moderately specific** (clear category, limited scope)
-* **8.0–9.4 = Highly specific** (narrow meaning, precise category)
-* **9.5–10.0 = Extremely specific** (very exact object, instance, or narrowly defined concept)
+             * **1.0 = Extremely broad umbrella term** (covers vast categories, highly general, highly vague)
+             * **2.0–3.9 = Broad term** (large conceptual coverage, many subcategories)
+             * **4.0–5.9 = Moderately broad** (general but partially narrowed)
+             * **6.0–7.9 = Moderately specific** (clear category, limited scope)
+             * **8.0–9.4 = Highly specific** (narrow meaning, precise category)
+             * **9.5–10.0 = Extremely specific** (very exact object, instance, or narrowly defined concept)
 
-### Important Rule:
+             ### Important Rule:
 
-If the word is an **umbrella term**, reduce the score according to how many meanings, categories, or subtypes it includes.
+             If the word is an **umbrella term**, reduce the score according to how many meanings, categories, or subtypes it includes.
 
-### Decimal Precision:
+             ### Decimal Precision:
 
-Use decimals when needed to reflect subtle differences in specificity.
+             Use decimals when needed to reflect subtle differences in specificity.
 
-### Consider:
+             ### Consider:
 
-* Number of subcategories included
-* Breadth of interpretation
-* Vagueness vs precision
-* Context flexibility
-* Conceptual scope
+             * Number of subcategories included
+             * Breadth of interpretation
+             * Vagueness vs precision
+             * Context flexibility
+             * Conceptual scope
 
-### Output Format:
+             ### Output Format (STRICT JSON ONLY):
+             {
+               "Word": "[word]",
+               "Rating": [1.0–10.0],
+               "Reason": "[short explanation]"
+             }
 
-Word: [word]
-Rating: [1.0–10.0]
-Reason: [short explanation]
+             ### Rules:
+             - Return only valid JSON
+             - Use double quotes for keys and string values
+             - Rating must be numeric
+             - No extra text outside JSON
 
-### Examples:
-
-Word: Entity
-Rating: 1.2
-Reason: Extremely broad; can refer to almost anything conceptual or physical.
-
-Word: Animal
-Rating: 1.8
-Reason: Covers all animal species.
-
-Word: Vehicle
-Rating: 2.4
-Reason: Includes many transport categories.
-
-Word: Car
-Rating: 6.3
-Reason: Specific transport type but contains many variants.
-
-Word: Sedan
-Rating: 8.4
-Reason: Narrow subtype of car.
-
-Word: Red Ferrari 488
-Rating: 9.8
-Reason: Very precise and highly specific.
+             ### Examples:
+             {
+               "Word": "Entity",
+               "Rating": 1.2,
+               "Reason": "Extremely broad; can refer to almost anything conceptual or physical."
+             }
+             {
+               "Word": "Animal",
+               "Rating": 1.8,
+               "Reason": "Covers all animal species."
+             }
+             {
+               "Word": "Vehicle",
+               "Rating": 2.4,
+               "Reason": "Includes many transport categories."
+             }
+             {
+               "Word": "Car",
+               "Rating": 6.3,
+               "Reason": "Specific transport type but contains many variants."
+             }
+             {
+               "Word": "Sedan",
+               "Rating": 8.4,
+               "Reason": "Narrow subtype of car."
+             }
+             {
+               "Word": "Red Ferrari 488",
+               "Rating": 9.8,
+               "Reason": "Very precise and highly specific."
+             }
              """
          },
         {"role": "user", "content": f"{word.word}"}
@@ -126,7 +139,7 @@ def posts(prompt: PostRequest):
     messages = [
         {"role": "system",
          "content": """
-         You are a social media content generator.
+You are a social media content generator.
 
 Input:
 - Topic: [USER PROMPT]
@@ -145,7 +158,28 @@ Rules:
 - No duplicate ideas.
 - Platform-neutral unless specified.
 
-Return only final posts.
+Return output in STRICT JSON ONLY using this format:
+
+{
+  "Topic": "[USER PROMPT]",
+  "Outputs": [
+    {
+      "PostNumber": 1,
+      "Content": "Generated post text"
+    },
+    {
+      "PostNumber": 2,
+      "Content": "Generated post text"
+    }
+  ]
+}
+
+Rules:
+- Return only valid JSON
+- Use double quotes
+- No markdown
+- No extra explanation
+- Output exactly X posts inside Outputs array
          """
         },
         {
