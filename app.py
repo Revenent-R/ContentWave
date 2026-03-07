@@ -470,7 +470,7 @@ Rules:
 
     return {'posts': final_text}
 
-@app.post('categorize')
+@app.post('/categorize')
 def categorize(category : CategoryRequest):
     messages = [
         {"role": "system",
