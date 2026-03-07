@@ -26,6 +26,9 @@ class RateRequest(BaseModel):
 class PostRequest(BaseModel):
     prompt: str
 
+class CategoryRequest(BaseModel):
+    category: str
+
 
 @app.get("/")
 def health_check():
@@ -467,4 +470,95 @@ Rules:
 
     return {'posts': final_text}
 
+@app.post('categorize')
+def categorize(category : CategoryRequest):
+    messages = [
+        {"role": "system",
+         "content": """
+         You are a professional content strategy AI.
 
+Your task is to analyze the given topic and determine which content format(s) are most suitable for maximum impact, reach, clarity, and audience engagement.
+
+Input:
+Topic: [USER TOPIC]
+
+Task:
+Suggest the most suitable content format(s) from options such as:
+
+- Short Video Format
+- Long Video Format
+- Blog Article
+- Instagram Post
+- Instagram Carousel
+- Twitter/X Post
+- Facebook Post
+- LinkedIn Post
+- YouTube Shorts
+- YouTube Full Video
+- Podcast
+- Email Newsletter
+- Infographic
+- Reddit Post
+- Thread Format
+- Presentation / Slide Deck
+- Website Landing Content
+- Community Discussion Post
+
+Evaluation Criteria:
+For each suggested format, analyze:
+
+1. Which format best matches the topic depth
+2. Which format best matches audience attention span
+3. Which format best allows explanation clarity
+4. Which format has strongest engagement potential
+5. Which format has strongest viral potential
+6. Which format suits emotional vs informational topics
+7. Whether topic needs visual demonstration, storytelling, or structured explanation
+
+Output Rules:
+- Rank formats from most suitable to least suitable
+- Give confidence score (1–10) for each format
+- Explain why each format fits
+- Suggest if multiple formats should be combined
+- Mention which format should be primary and which secondary
+
+Output Format:
+
+Primary Recommended Format:
+[Format Name]
+
+Reason:
+[Detailed reason]
+
+Confidence:
+[X/10]
+
+Secondary Formats:
+1. [Format] – reason
+2. [Format] – reason
+3. [Format] – reason
+
+Strategic Note:
+[Whether topic should start short-form then expand into long-form, etc.]
+
+Important:
+Choose based on actual communication effectiveness, not popularity alone.
+         
+         
+        """
+        },
+        {'role': 'user',
+         'content': f'{category.category}'
+         }
+    ]
+
+    response = model.chat.completions.create(
+        model=MODEL,
+        messages=messages,
+        max_tokens=500,
+        temperature=0.1
+    )
+
+    final_text = response.choices[0].message.content
+
+    return {'category': final_text}
