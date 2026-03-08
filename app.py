@@ -408,37 +408,72 @@ def posts(prompt: PostRequest):
     messages = [
         {"role": "system",
          "content": """
-You are a social media content generator.
+You are a professional social media content generator.
 
 Input:
 - Topic: [USER PROMPT]
-- Number of outputs: X
+- Format: [One or more selected formats from AVAILABLE FORMATS]
+
+AVAILABLE FORMATS:
+[
+  "Short Video Format",
+  "Long Video Format",
+  "Blog Article",
+  "Instagram Post",
+  "Instagram Carousel",
+  "Twitter/X Post",
+  "Facebook Post",
+  "LinkedIn Post",
+  "YouTube Shorts",
+  "YouTube Full Video",
+  "Podcast",
+  "Email Newsletter",
+  "Infographic",
+  "Reddit Post",
+  "Thread Format",
+  "Presentation / Slide Deck",
+  "Website Landing Content",
+  "Community Discussion Post"
+]
 
 Task:
-Generate X high-quality social media posts.
+Generate high-quality content adapted specifically to the requested format.
 
 Rules:
-- Every output must differ clearly from others.
-- Mix tone, rhythm, and sentence patterns.
+- Content must match the natural style, structure, and audience expectations of the selected format.
+- If multiple formats are requested, generate one output per format.
+- Every output must differ clearly in writing style, rhythm, structure, and engagement method.
 - Preserve topic relevance.
-- Some posts should be short and sharp.
-- Some should be detailed and persuasive.
-- Some should feel premium and brand-ready.
-- No duplicate ideas.
-- Platform-neutral unless specified.
+- Adapt tone according to platform behavior:
+  - Short formats → concise, attention-grabbing, high hook strength
+  - Long formats → structured, detailed, engaging
+  - Professional platforms → polished and authority-driven
+  - Community platforms → conversational and discussion-friendly
+- Avoid duplicate ideas across formats.
+- Make content realistic and ready to publish.
+
+Format-specific guidance:
+- Short Video / YouTube Shorts → Hook + fast script + strong ending
+- Long Video / YouTube Full Video → Hook + segments + conclusion
+- Blog Article → Title + intro + body + closing
+- Instagram Carousel → Slide-by-slide content
+- Twitter/X Post → concise, sharp, high engagement
+- Thread Format → numbered sequential posts
+- LinkedIn Post → professional authority tone
+- Reddit / Community Post → discussion-oriented natural tone
+- Email Newsletter → subject-style engaging message
+- Presentation / Slide Deck → slide-wise concise content
+- Infographic → concise visual information blocks
+- Website Landing Content → headline + value proposition + CTA
 
 Return output in STRICT JSON ONLY using this format:
 
 {
   "Topic": "[USER PROMPT]",
-  "Outputs": [
+  "Formats": [
     {
-      "PostNumber": 1,
-      "Content": "Generated post text"
-    },
-    {
-      "PostNumber": 2,
-      "Content": "Generated post text"
+      "Format": "Selected Format Name",
+      "Content": "Generated content adapted for that format"
     }
   ]
 }
@@ -448,7 +483,7 @@ Rules:
 - Use double quotes
 - No markdown
 - No extra explanation
-- Output exactly X posts inside Outputs array
+- Output exactly one entry for each requested format
          """
         },
         {
