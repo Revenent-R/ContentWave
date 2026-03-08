@@ -403,7 +403,7 @@ def rate(word: RateRequest):
 
 
 @app.post("/posts")
-def posts(prompt: PostRequest):
+def posts(platform : PostRequest,prompt: PostRequest):
 
     messages = [
         {"role": "system",
@@ -488,7 +488,7 @@ Rules:
         },
         {
             'role': 'user',
-            'content': f'{prompt.prompt}'
+            'content': f'Platform : {platform.prompt}, Prompt : {prompt.prompt}'
         }
     ]
 
