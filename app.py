@@ -437,34 +437,128 @@ AVAILABLE FORMATS:
 ]
 
 Task:
-Generate high-quality content adapted specifically to the requested format.
+Generate premium-quality content adapted precisely to the selected format.
 
-Rules:
-- Content must match the natural style, structure, and audience expectations of the selected format.
-- If multiple formats are requested, generate one output per format.
-- Every output must differ clearly in writing style, rhythm, structure, and engagement method.
-- Preserve topic relevance.
-- Adapt tone according to platform behavior:
-  - Short formats → concise, attention-grabbing, high hook strength
-  - Long formats → structured, detailed, engaging
-  - Professional platforms → polished and authority-driven
-  - Community platforms → conversational and discussion-friendly
-- Avoid duplicate ideas across formats.
-- Make content realistic and ready to publish.
+Core Rules:
+- Content must naturally match platform behavior, audience expectations, and publishing style.
+- If multiple formats are requested, generate one fully adapted output for each format.
+- Every output must clearly differ in tone, pacing, structure, and engagement style.
+- Preserve topic relevance at all times.
+- Avoid duplicate ideas, repeated hooks, or similar sentence flow.
+- Make every output realistic, publish-ready, and professionally formatted.
 
-Format-specific guidance:
-- Short Video / YouTube Shorts → Hook + fast script + strong ending
-- Long Video / YouTube Full Video → Hook + segments + conclusion
-- Blog Article → Title + intro + body + closing
-- Instagram Carousel → Slide-by-slide content
-- Twitter/X Post → concise, sharp, high engagement
-- Thread Format → numbered sequential posts
-- LinkedIn Post → professional authority tone
-- Reddit / Community Post → discussion-oriented natural tone
-- Email Newsletter → subject-style engaging message
-- Presentation / Slide Deck → slide-wise concise content
-- Infographic → concise visual information blocks
-- Website Landing Content → headline + value proposition + CTA
+Formatting Rules:
+- Apply strong internal formatting inside Content itself.
+- Use natural paragraph breaks where appropriate.
+- Use section labels when suitable.
+- Use numbered flow where needed.
+- Use line breaks strategically for readability.
+- Improve visual rhythm so content feels premium and easy to consume.
+- Avoid flat text blocks unless the format naturally requires them.
+
+Content Depth Rules:
+- Short formats must no longer be minimal.
+- Short formats should now contain enough substance to feel valuable while still concise.
+- Add stronger hooks, clearer development, and stronger ending lines.
+- Long formats should contain richer structure and layered delivery.
+
+Tone Adaptation:
+- Short formats → attention-grabbing + informative + expanded enough to feel complete
+- Long formats → structured + engaging + segmented clearly
+- Professional formats → authority + clarity + credibility
+- Community formats → conversational + authentic + engaging
+- Marketing formats → persuasive + high readability + conversion-aware
+
+Format-Specific Output Standards:
+
+1. Short Video Format / YouTube Shorts:
+- Structure:
+  Hook:
+  Main Script:
+  Engagement Line:
+  Ending:
+- Hook must be strong.
+- Main script should be expanded (not ultra-short).
+- Include natural spoken pacing.
+- Ending should create retention or curiosity.
+
+2. Long Video Format / YouTube Full Video:
+- Structure:
+  Title:
+  Hook:
+  Segment 1:
+  Segment 2:
+  Segment 3:
+  Closing:
+- Each section clearly separated.
+
+3. Blog Article:
+- Structure:
+  Title
+  Introduction
+  Main Section(s)
+  Conclusion
+
+4. Instagram Post:
+- Strong opening line
+- Body with visual rhythm
+- Ending CTA if natural
+
+5. Instagram Carousel:
+- Format slide by slide:
+  Slide 1:
+  Slide 2:
+  Slide 3:
+  etc.
+
+6. Twitter/X Post:
+- High-impact opening
+- Better sentence rhythm
+- Optional short thread style if needed
+
+7. Facebook Post:
+- Natural conversational flow
+- Readable paragraph spacing
+
+8. LinkedIn Post:
+- Professional hook
+- Structured insight blocks
+- Strong closing takeaway
+
+9. Podcast:
+- Intro
+- Talking points
+- Closing statement
+
+10. Email Newsletter:
+- Subject:
+- Opening:
+- Main body:
+- Closing:
+
+11. Infographic:
+- Sectioned concise blocks
+
+12. Thread Format:
+- Numbered sequence:
+  1.
+  2.
+  3.
+
+13. Presentation / Slide Deck:
+- Slide 1:
+- Slide 2:
+- Slide 3:
+
+14. Website Landing Content:
+- Headline
+- Subheadline
+- Value Proposition
+- CTA
+
+15. Reddit / Community Discussion:
+- Natural conversational structure
+- Discussion starter ending
 
 Return output in STRICT JSON ONLY using this format:
 
@@ -473,17 +567,18 @@ Return output in STRICT JSON ONLY using this format:
   "Formats": [
     {
       "Format": "Selected Format Name",
-      "Content": "Generated content adapted for that format"
+      "Content": "Well-formatted generated content"
     }
   ]
 }
 
-Rules:
+Strict Output Rules:
 - Return only valid JSON
-- Use double quotes
+- Use double quotes only
 - No markdown
 - No extra explanation
-- Output exactly one entry for each requested format
+- Preserve line breaks inside JSON content using \n
+- Output exactly one entry per requested format
          """
         },
         {
