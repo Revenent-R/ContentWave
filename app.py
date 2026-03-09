@@ -472,93 +472,109 @@ Tone Adaptation:
 Format-Specific Output Standards:
 
 1. Short Video Format / YouTube Shorts:
-- Structure:
-  Hook:
-  Main Script:
-  Engagement Line:
-  Ending:
-- Hook must be strong.
-- Main script should be expanded (not ultra-short).
-- Include natural spoken pacing.
-- Ending should create retention or curiosity.
+- Hook = strong spoken opener
+- Slides = script broken into logical spoken sections
+- Caption = full short-form caption
+- CTA = retention-focused closing
+- Hashtags = relevant short-video hashtags
 
 2. Long Video Format / YouTube Full Video:
-- Structure:
-  Title:
-  Hook:
-  Segment 1:
-  Segment 2:
-  Segment 3:
-  Closing:
-- Each section clearly separated.
+- Hook = opening hook
+- Slides = segment-by-segment content flow
+- Caption = full video description
+- CTA = audience engagement closing
+- Hashtags = relevant video hashtags
 
 3. Blog Article:
-- Structure:
-  Title
-  Introduction
-  Main Section(s)
-  Conclusion
+- Hook = title/introduction hook
+- Slides = article broken into major sections
+- Caption = summary/meta description
+- CTA = reader action prompt
+- Hashtags = topic hashtags
 
 4. Instagram Post:
-- Strong opening line
-- Body with visual rhythm
-- Ending CTA if natural
+- Hook = strong opening line
+- Slides = key content blocks if needed
+- Caption = full post caption
+- CTA = natural engagement line
+- Hashtags = Instagram hashtags
 
 5. Instagram Carousel:
-- Format slide by slide:
-  Slide 1:
-  Slide 2:
-  Slide 3:
-  etc.
+- Hook = opening slide hook
+- Slides = slide-by-slide content
+- Caption = full supporting caption
+- CTA = save/share/comment prompt
+- Hashtags = carousel hashtags
 
 6. Twitter/X Post:
-- High-impact opening
-- Better sentence rhythm
-- Optional short thread style if needed
+- Hook = first line impact
+- Slides = thread flow if needed
+- Caption = full post text
+- CTA = engagement close
+- Hashtags = X hashtags
 
 7. Facebook Post:
-- Natural conversational flow
-- Readable paragraph spacing
+- Hook = opening line
+- Slides = content flow sections
+- Caption = full post body
+- CTA = discussion prompt
+- Hashtags = Facebook-friendly hashtags
 
 8. LinkedIn Post:
-- Professional hook
-- Structured insight blocks
-- Strong closing takeaway
+- Hook = professional opening insight
+- Slides = structured insight blocks
+- Caption = full professional post
+- CTA = professional engagement close
+- Hashtags = LinkedIn hashtags
 
 9. Podcast:
-- Intro
-- Talking points
-- Closing statement
+- Hook = intro opening
+- Slides = talking point flow
+- Caption = episode summary
+- CTA = listener engagement line
+- Hashtags = podcast hashtags
 
 10. Email Newsletter:
-- Subject:
-- Opening:
-- Main body:
-- Closing:
+- Hook = subject/opening hook
+- Slides = email section breakdown
+- Caption = newsletter body
+- CTA = action prompt
+- Hashtags = optional if relevant
 
 11. Infographic:
-- Sectioned concise blocks
+- Hook = headline
+- Slides = section blocks
+- Caption = infographic summary
+- CTA = reader action
+- Hashtags = infographic hashtags
 
 12. Thread Format:
-- Numbered sequence:
-  1.
-  2.
-  3.
+- Hook = thread opener
+- Slides = numbered thread sequence
+- Caption = full thread summary
+- CTA = reply/share prompt
+- Hashtags = thread hashtags
 
 13. Presentation / Slide Deck:
-- Slide 1:
-- Slide 2:
-- Slide 3:
+- Hook = presentation opener
+- Slides = slide-by-slide content
+- Caption = presentation summary
+- CTA = audience takeaway
+- Hashtags = optional relevant tags
 
 14. Website Landing Content:
-- Headline
-- Subheadline
-- Value Proposition
-- CTA
+- Hook = headline
+- Slides = content sections
+- Caption = supporting landing copy
+- CTA = conversion line
+- Hashtags = optional if needed
 
 15. Reddit / Community Discussion:
-- Natural conversational structure
-- Discussion starter ending
+- Hook = opening statement
+- Slides = discussion flow sections
+- Caption = full discussion body
+- CTA = discussion starter ending
+- Hashtags = minimal or community-relevant only if natural
 
 Return output in STRICT JSON ONLY using this format:
 
