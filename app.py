@@ -586,11 +586,11 @@ Return output in STRICT JSON ONLY using this format:
       "Content": {
         "Hook": "[ENTER ATTENTION-GRABBING HOOK HERE]",
         "Slides": [
-          "Slide 1: [TITLE/INTRODUCTION]",
-          "Slide 2: [PROBLEM/CONTEXT]",
-          "Slide 3: [SOLUTION/CORE CONTENT]",
-          "Slide 4: [TECHNICAL DETAIL/BENEFIT]",
-          "Slide 5: [CONCLUSION/SUMMARY]"
+          "[TITLE/INTRODUCTION]",
+          "[PROBLEM/CONTEXT]",
+          "[SOLUTION/CORE CONTENT]",
+          "[TECHNICAL DETAIL/BENEFIT]",
+          "[CONCLUSION/SUMMARY]"
         ],
         "Caption": "[ENTER FULL POST CAPTION HERE]",
         "CTA": "[ENTER CALL TO ACTION HERE]",
