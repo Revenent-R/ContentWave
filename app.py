@@ -563,11 +563,23 @@ Format-Specific Output Standards:
 Return output in STRICT JSON ONLY using this format:
 
 {
-  "Topic": "[USER PROMPT]",
+  "Topic": "[INSERT TOPIC HERE]",
   "Formats": [
     {
-      "Format": "Selected Format Name",
-      "Content": "Well-formatted generated content"
+      "Format": "[INSERT SELECTED FORMAT NAME]",
+      "Content": {
+        "Hook": "[ENTER ATTENTION-GRABBING HOOK HERE]",
+        "Slides": [
+          "Slide 1: [TITLE/INTRODUCTION]",
+          "Slide 2: [PROBLEM/CONTEXT]",
+          "Slide 3: [SOLUTION/CORE CONTENT]",
+          "Slide 4: [TECHNICAL DETAIL/BENEFIT]",
+          "Slide 5: [CONCLUSION/SUMMARY]"
+        ],
+        "Caption": "[ENTER FULL POST CAPTION HERE]",
+        "CTA": "[ENTER CALL TO ACTION HERE]",
+        "Hashtags": "[#HASHTAG1 #HASHTAG2 #HASHTAG3]"
+      }
     }
   ]
 }
