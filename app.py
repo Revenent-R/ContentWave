@@ -579,22 +579,26 @@ Format-Specific Output Standards:
 Return output in STRICT JSON ONLY using this format:
 
 {
-  "Topic": "[INSERT TOPIC HERE]",
+  "Topic": "[INSERT TOPIC HERE — main subject or idea to be covered]",
   "Formats": [
     {
-      "Format": "[INSERT SELECTED FORMAT NAME]",
+      "Format": "[INSERT SELECTED FORMAT NAME — e.g., Instagram Carousel, Blog Article, Short Video]",
       "Content": {
-        "Hook": "[ENTER ATTENTION-GRABBING HOOK HERE]",
+        "Hook": "[Opening line designed to immediately capture attention and create curiosity. This should introduce the topic in a compelling way without fully explaining it.]",
         "Slides": [
-          "[TITLE/INTRODUCTION]",
-          "[PROBLEM/CONTEXT]",
-          "[SOLUTION/CORE CONTENT]",
-          "[TECHNICAL DETAIL/BENEFIT]",
-          "[CONCLUSION/SUMMARY]"
+          "[Slide 1 — Introduce the topic clearly and establish what the audience is about to learn or discover.]",
+          "[Slide 2 — Present the main problem, context, challenge, or question related to the topic.]",
+          "[Slide 3 — Deliver the key explanation, solution, insight, or primary value of the content.]",
+          "[Slide 4 — Add supporting detail such as examples, benefits, technical explanation, proof, or deeper context.]",
+          "[Slide 5 — Conclude with a takeaway, summary, final insight, or next-step message.]"
         ],
-        "Caption": "[ENTER FULL POST CAPTION HERE]",
-        "CTA": "[ENTER CALL TO ACTION HERE]",
-        "Hashtags": "[#HASHTAG1 #HASHTAG2 #HASHTAG3]"
+        "Caption": "[A complete supporting caption that expands the message beyond the slides, adds context, and reinforces the main idea without repeating slide text word-for-word.]",
+        "CTA": "[A direct call to action telling the audience what to do next — comment, share, save, visit, follow, or respond.]",
+        "Hashtags": [
+          "[Primary topic hashtag]",
+          "[Audience or niche hashtag]",
+          "[Discovery or trend hashtag]"
+        ]
       }
     }
   ]
@@ -619,7 +623,7 @@ Strict Output Rules:
         model=MODEL,
         messages=messages,
         max_tokens=500,
-        temperature=0.1
+        temperature=0.4
     )
 
     print(response)
