@@ -618,7 +618,7 @@ Strict Output Rules:
         },
         {
             'role': 'user',
-            'content': f'Number of Post Variants to Generate: {count.count} Platform : {platform.prompt}, Prompt : {prompt.prompt}'
+            'content': f"Generate {count.count} variants for {platform.prompt}. Topic: {prompt.prompt}"
         }
     ]
 
