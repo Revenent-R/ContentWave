@@ -19,7 +19,6 @@ API_KEY = os.environ.get("API_TOKEN", None)
 MODEL = os.environ.get("MODEL", None)
 
 model = InferenceClient(
-    provider="hf-inference",
     token=API_KEY
 )
 
