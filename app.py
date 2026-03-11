@@ -18,7 +18,10 @@ app.add_middleware(
 API_KEY = os.environ.get("API_TOKEN", None)
 MODEL = os.environ.get("MODEL", None)
 
-model = InferenceClient(token=API_KEY)
+model = InferenceClient(
+    provider="hf-inference",
+    token=API_KEY
+)
 
 class RateRequest(BaseModel):
     word: str
