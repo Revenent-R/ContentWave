@@ -625,7 +625,7 @@ Strict Output Rules:
     response = model.chat.completions.create(
         model=MODEL,
         messages=messages,
-        max_tokens=500,
+        max_tokens=1000,
         temperature=0.4
     )
 
