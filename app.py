@@ -29,6 +29,9 @@ class PostRequest(BaseModel):
 class CategoryRequest(BaseModel):
     category: str
 
+class PostCountResponse(BaseModel):
+    count: int
+
 
 @app.get("/")
 def health_check():
@@ -403,7 +406,7 @@ def rate(word: RateRequest):
 
 
 @app.post("/posts")
-def posts(platform : PostRequest,prompt: PostRequest):
+def posts(count : PostCountResponse,platform : PostRequest,prompt: PostRequest):
 
     messages = [
         {"role": "system",
@@ -615,7 +618,7 @@ Strict Output Rules:
         },
         {
             'role': 'user',
-            'content': f'Platform : {platform.prompt}, Prompt : {prompt.prompt}'
+            'content': f'Number of Post Variants to Generate: {count.count} Platform : {platform.prompt}, Prompt : {prompt.prompt}'
         }
     ]
 
